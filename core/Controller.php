@@ -5,6 +5,7 @@ namespace core;
 class Controller {
     protected $template;
     protected $errorMessage;
+    protected $rows;
     public $isPost = false;
     public $isGet = false;
     public $post;
@@ -58,5 +59,22 @@ class Controller {
     public function isErrorMessageExists(): bool
     {
         return count($this->errorMessage) > 0;
+    }
+
+    public function addRows($message = null) : void
+    {
+        $this->rows[] = $message;
+        $this->template->setParam('rows', $this->rows);
+    }
+
+    public function clearRows() : void
+    {
+        $this->rows = [];
+        $this->template->setParam('rows', null);
+    }
+
+    public function isRows(): bool
+    {
+        return count($this->rows) > 0;
     }
 }

@@ -29,7 +29,7 @@ if(empty($Content))
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="/" class="nav-link px-2 link-secondary">Головна</a></li>
           <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
+          <li><a href="/drinks/index" class="nav-link px-2 link-body-emphasis">Напої</a></li>
           <?php if(!Users::IsUserLogged()) : ?>
             <li><a href="/users/login" class="nav-link px-2 link-body-emphasis">Увійти</a></li>
             <li><a href="/users/register" class="nav-link px-2 link-body-emphasis">Зареєструватись</a></li>
@@ -61,7 +61,9 @@ if(empty($Content))
     </div>
     
     <div> 
-        <h1><?=$Title?></h1>
+      <div class="container">
+          <h1><?=$Title?></h1>
+      </div>
         <?=$Content?>
     </div>
     <div class="container">
