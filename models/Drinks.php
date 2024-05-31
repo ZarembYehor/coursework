@@ -33,4 +33,47 @@ class Drinks extends Model
             return null;
         }
     }
+
+    public static function FindByCategory($category_id = null, $sort_price = null, $volume = null, $search_name = null) {
+        $order_by = '';
+        if ($sort_price === 'asc') {
+            $order_by = ' ORDER BY price ASC';
+        } elseif ($sort_price === 'desc') {
+            $order_by = ' ORDER BY price DESC';
+        }
+    
+        $sql = "SELECT * FROM " . static::$tableName;
+        $conditions = [];
+        $params = [];
+    
+        if (!empty($category_id)) {
+            $conditions[] = "category_id = :category_id";
+            $params[':category_id'] = $category_id;
+        }
+    
+        if (!empty($volume)) {
+            $conditions[] = "volume = :volume";
+            $params[':volume'] = $volume;
+        }
+    
+        if (!empty($search_name)) {
+            $conditions[] = "name LIKE :search_name";
+            $params[':search_name'] = '%' . $search_name . '%';
+        }
+    
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(' AND ', $conditions);
+        }
+    
+        $sql .= $order_by;
+        
+        $sth = Core::get()->db->pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $sth->bindValue($key, $value);
+        }
+        $sth->execute();
+        return $sth->fetchAll();
+    }
+    
+    
 }

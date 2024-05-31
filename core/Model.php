@@ -44,12 +44,7 @@ class Model
     }
 
     public static function findByCondition($conditionAssocArray) {
-        $arr = Core::get()->db->select(static::$tableName, '*', $conditionAssocArray);
-        if(count($arr) > 0) {
-            return $arr[0];
-        } else {
-            return null;
-        }
+        return Core::get()->db->select(static::$tableName, '*', $conditionAssocArray);
     }
 
     public function save() {

@@ -30,15 +30,22 @@ $this->Title = '';
             top: 10px;
             right: 10px;
         }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
     </style>
     <h1 class="mb-4">Пропозиції</h1>
 
     <form method="post" action="/drinks/filter">
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <input type="text" class="form-control" name="search_name" placeholder="Пошук за назвою" value="<?php echo isset($_POST['search_name']) ? htmlspecialchars($_POST['search_name'], ENT_QUOTES) : ''; ?>">
+        <div class="filter-container">
+            <div class="mb-4" style="flex-grow: 1;">
+                <input type="text" name="search_name" class="form-control" placeholder="Пошук за назвою" value="<?php echo isset($_POST['search_name']) ? htmlspecialchars($_POST['search_name']) : ''; ?>">
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="mb-4">
                 <h5>Фільтрувати за категорією:</h5>
                 <?php 
                 $categories = [
@@ -58,7 +65,7 @@ $this->Title = '';
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="mb-4">
                 <h5>Сортувати за ціною:</h5>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="sort_price" id="priceAsc" value="asc" <?php if (isset($_POST['sort_price']) && $_POST['sort_price'] == 'asc') echo 'checked'; ?>>
@@ -73,37 +80,22 @@ $this->Title = '';
                     </label>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="mb-4">
                 <h5>Фільтрувати за об'ємом:</h5>
                 <select class="form-select" name="volume">
                     <option value="">Всі</option>
-                    <option value="0.2">0.2 л</option>
-                    <option value="0.25">0.25 л</option>
-                    <option value="0.33">0.33 л</option>
-                    <option value="0.35">0.35 л</option>
-                    <option value="0.355">0.355 л</option>
-                    <option value="0.46">0.46 л</option>
-                    <option value="0.5">0.5 л</option>
-                    <option value="0.7">0.7 л</option>
-                    <option value="0.75">0.75 л</option>
-                    <option value="0.95">0.95 л</option>
-                    <option value="1">1.0 л</option>
-                    <option value="1.25">1.25 л</option>
-                    <option value="1.5">1.5 л</option>
-                    <option value="1.75">1.75 л</option>
-                    <option value="2">2.0 л</option>
-                    <option value="3">3.0 л</option>
-                    <option value="20 пакетів">20 пакетів</option>
-                    <option value="24 пакети">24 пакети</option>
-                    <option value="200 г">200 г</option>
-                    <option value="250 г">250 г</option>
+                    <option value="0.5" <?php if (isset($_POST['volume']) && $_POST['volume'] == '0.5') echo 'selected'; ?>>0.5 л</option>
+                    <option value="1" <?php if (isset($_POST['volume']) && $_POST['volume'] == '1') echo 'selected'; ?>>1 л</option>
+                    <option value="1.5" <?php if (isset($_POST['volume']) && $_POST['volume'] == '1.5') echo 'selected'; ?>>1.5 л</option>
+                    <option value="2" <?php if (isset($_POST['volume']) && $_POST['volume'] == '2') echo 'selected'; ?>>2 л</option>
                 </select>
             </div>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Фільтрувати</button>
+        <a href="/drinks" class="btn btn-secondary mt-3">Очистити фільтр</a>
     </form>
-    <br/>
-    <div class="row">
+
+    <div class="row mt-4">
         <?php if (!empty($rows)): ?>
             <?php foreach ($rows as $row): ?>
                 <?php if (!empty($row)): ?>
