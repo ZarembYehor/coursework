@@ -15,14 +15,16 @@ class Session {
 
     public function setValues($assocArray)
     {
-        foreach($assocArray as $key => $value)
+        foreach ($assocArray as $key => $value) {
             $this->set($key, $value);
+        }
     }
 
     public function get($name)
     {
-        if(empty($_SESSION))
-            return null;
-        return $_SESSION[$name];
+        if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        }
+        return null;
     }
 }

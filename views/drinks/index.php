@@ -1,5 +1,9 @@
 <?php
-/** @var array $rows Записи товарів*/
+/** @var array $rows Записи товарів */
+/** @var int $category_id Вибрана категорія */
+/** @var string $sort_price Вибраний порядок сортування ціни */
+/** @var string $volume Вибраний об'єм */
+/** @var string $search_name Введене значення для пошуку */
 $this->Title = '';
 ?>
 <div class="container mt-5">
@@ -30,15 +34,22 @@ $this->Title = '';
             top: 10px;
             right: 10px;
         }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
     </style>
     <h1 class="mb-4">Пропозиції</h1>
 
     <form method="post" action="/drinks/filter">
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <input type="text" class="form-control" name="search_name" placeholder="Пошук за назвою" value="<?php echo isset($_POST['search_name']) ? htmlspecialchars($_POST['search_name'], ENT_QUOTES) : ''; ?>">
+        <div class="filter-container">
+            <div class="mb-4" style="flex-grow: 1;">
+                <input type="text" name="search_name" class="form-control" placeholder="Пошук за назвою" value="<?php echo htmlspecialchars($search_name ?? ''); ?>">
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="mb-4">
                 <h5>Фільтрувати за категорією:</h5>
                 <?php 
                 $categories = [
@@ -51,29 +62,29 @@ $this->Title = '';
 
                 foreach ($categories as $category): ?>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="category_id" id="category<?php echo $category['id']; ?>" value="<?php echo $category['id']; ?>" <?php if (isset($_POST['category_id']) && $_POST['category_id'] == $category['id']) echo 'checked'; ?>>
+                        <input class="form-check-input" type="radio" name="category_id" id="category<?php echo $category['id']; ?>" value="<?php echo $category['id']; ?>" <?php if (isset($category_id) && $category_id == $category['id']) echo 'checked'; ?>>
                         <label class="form-check-label" for="category<?php echo $category['id']; ?>">
                             <?php echo $category['name']; ?>
                         </label>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="mb-4">
                 <h5>Сортувати за ціною:</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort_price" id="priceAsc" value="asc" <?php if (isset($_POST['sort_price']) && $_POST['sort_price'] == 'asc') echo 'checked'; ?>>
+                    <input class="form-check-input" type="radio" name="sort_price" id="priceAsc" value="asc" <?php if (isset($sort_price) && $sort_price == 'asc') echo 'checked'; ?>>
                     <label class="form-check-label" for="priceAsc">
                         Від найнижчої до найвищої
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort_price" id="priceDesc" value="desc" <?php if (isset($_POST['sort_price']) && $_POST['sort_price'] == 'desc') echo 'checked'; ?>>
+                    <input class="form-check-input" type="radio" name="sort_price" id="priceDesc" value="desc" <?php if (isset($sort_price) && $sort_price == 'desc') echo 'checked'; ?>>
                     <label class="form-check-label" for="priceDesc">
                         Від найвищої до найнижчої
                     </label>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="mb-4">
                 <h5>Фільтрувати за об'ємом:</h5>
                 <select class="form-select" name="volume">
                     <option value="">Всі</option>
@@ -101,9 +112,10 @@ $this->Title = '';
             </div>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Фільтрувати</button>
+        <a href="/drinks" class="btn btn-secondary mt-3">Очистити фільтр</a>
     </form>
-    <br/>
-    <div class="row">
+
+    <div class="row mt-4">
         <?php if (!empty($rows)): ?>
             <?php foreach ($rows as $row): ?>
                 <?php if (!empty($row)): ?>
@@ -112,7 +124,10 @@ $this->Title = '';
                             <div class="col-md-4 mb-4">
                                 <div class="card">
                                     <div class="btn-container">
-                                        <a href="#" class="btn btn-primary">Купити</a>
+                                        <form method="post" action="/drinks/addToCart">
+                                            <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                                            <button type="submit" class="btn btn-primary">Купити</button>
+                                        </form>
                                     </div>
                                     <div class="card-img-container">
                                         <img src="<?php echo $value['image_url']; ?>" class="card-img-top" alt="<?php echo $value['name']; ?>">

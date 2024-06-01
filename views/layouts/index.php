@@ -1,82 +1,113 @@
 <?php
-  /**@var string  $Title*/
+/** @var string $Title */
+/** @var string $Content */
 
 use models\Users;
+use core\Cart;
 
-  /**@var string  $Content*/
-if(empty($Title))
-  $Title = "";
-if(empty($Content))
-  $Content = "";
+if (empty($Title)) {
+    $Title = "";
+}
+if (empty($Content)) {
+    $Content = "";
+}
 ?>
 <!DOCTYPE html>
-<html lang ="en">
-    <head>
-        <meta charset = "UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title><?=$Title?></title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script defer src="index.js"></script>
-    </head>
-    <body>
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-        </a>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><?= $Title ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script defer src="index.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .navbar-fixed {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: white;
+            box-shadow: 0 4px 2px -2px gray;
+        }
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 link-secondary">Головна</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-          <li><a href="/drinks/index" class="nav-link px-2 link-body-emphasis">Напої</a></li>
-          <?php if(!Users::IsUserLogged()) : ?>
-            <li><a href="/users/login" class="nav-link px-2 link-body-emphasis">Увійти</a></li>
-            <li><a href="/users/register" class="nav-link px-2 link-body-emphasis">Зареєструватись</a></li>
-          <?php endif; ?>
+        body {
+            padding-top: 60px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">SibashShop</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/" class="nav-link">Головна</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Customers</a></li>
+            <li class="nav-item"><a href="/drinks/index" class="nav-link">Напої</a></li>
+            <?php if (!Users::IsUserLogged()): ?>
+                <li class="nav-item"><a href="/users/login" class="nav-link">Увійти</a></li>
+                <li class="nav-item"><a href="/users/register" class="nav-link">Зареєструватись</a></li>
+            <?php endif; ?>
         </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
         </form>
-    <?php if(Users::IsUserLogged()) : ?>
-        <div class="dropdown text-end">
-          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <?php if(Users::IsUserLogged()) : ?>
-            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-            <?php endif; ?>
-          </a>
-          
-            <ul class="dropdown-menu text-small">
-              <li><a class="dropdown-item" href="#">New project...</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/users/logout">Вийти</a></li>
-            </ul>
-          
-        </div>
+        <?php if (Users::IsUserLogged()): ?>
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/users/logout">Вийти</a></li>
+                </ul>
+            </div>
         <?php endif; ?>
-      </div>
+        <!-- Cart Icon with Item Count -->
+        <div class="dropdown text-end ms-3 position-relative">
+            <a href="/drinks/cart" class="d-block link-dark text-decoration-none position-relative">
+                <i class="bi bi-cart-fill" style="font-size: 1.5rem;"></i>
+                <?php
+                $cartItemsCount = count(Cart::getProducts());
+                if ($cartItemsCount > 0): ?>
+                    <span class="badge bg-danger rounded-pill cart-badge"><?= $cartItemsCount ?></span>
+                <?php endif; ?>
+            </a>
+        </div>
     </div>
-    
-    <div> 
-      <div class="container">
-          <h1><?=$Title?></h1>
-      </div>
-        <?=$Content?>
-    </div>
+</div>
+<div>
     <div class="container">
-        <footer class="py-3 my-4">
-            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <h1><?= $Title ?></h1>
+    </div>
+    <?= $Content ?>
+</div>
+<div class="container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
-            </ul>
-            <p class="text-center text-body-secondary">© 2024 Company, Inc</p>
-        </footer>
-    </div>
-    </body>
+        </ul>
+        <p class="text-center text-body-secondary">© 2024 Company, Inc</p>
+    </footer>
+</div>
+</body>
 </html>

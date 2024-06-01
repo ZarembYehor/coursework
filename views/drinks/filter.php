@@ -1,5 +1,9 @@
 <?php
-/** @var array $rows Записи товарів*/
+/** @var array $rows Записи товарів */
+/** @var int $category_id Вибрана категорія */
+/** @var string $sort_price Вибраний порядок сортування ціни */
+/** @var string $volume Вибраний об'єм */
+/** @var string $search_name Введене значення для пошуку */
 $this->Title = '';
 ?>
 <div class="container mt-5">
@@ -43,7 +47,7 @@ $this->Title = '';
     <form method="post" action="/drinks/filter">
         <div class="filter-container">
             <div class="mb-4" style="flex-grow: 1;">
-                <input type="text" name="search_name" class="form-control" placeholder="Пошук за назвою" value="<?php echo isset($_POST['search_name']) ? htmlspecialchars($_POST['search_name']) : ''; ?>">
+                <input type="text" name="search_name" class="form-control" placeholder="Пошук за назвою" value="<?php echo htmlspecialchars($search_name ?? ''); ?>">
             </div>
             <div class="mb-4">
                 <h5>Фільтрувати за категорією:</h5>
@@ -58,7 +62,7 @@ $this->Title = '';
 
                 foreach ($categories as $category): ?>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="category_id" id="category<?php echo $category['id']; ?>" value="<?php echo $category['id']; ?>" <?php if (isset($_POST['category_id']) && $_POST['category_id'] == $category['id']) echo 'checked'; ?>>
+                        <input class="form-check-input" type="radio" name="category_id" id="category<?php echo $category['id']; ?>" value="<?php echo $category['id']; ?>" <?php if (isset($category_id) && $category_id == $category['id']) echo 'checked'; ?>>
                         <label class="form-check-label" for="category<?php echo $category['id']; ?>">
                             <?php echo $category['name']; ?>
                         </label>
@@ -68,13 +72,13 @@ $this->Title = '';
             <div class="mb-4">
                 <h5>Сортувати за ціною:</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort_price" id="priceAsc" value="asc" <?php if (isset($_POST['sort_price']) && $_POST['sort_price'] == 'asc') echo 'checked'; ?>>
+                    <input class="form-check-input" type="radio" name="sort_price" id="priceAsc" value="asc" <?php if (isset($sort_price) && $sort_price == 'asc') echo 'checked'; ?>>
                     <label class="form-check-label" for="priceAsc">
                         Від найнижчої до найвищої
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort_price" id="priceDesc" value="desc" <?php if (isset($_POST['sort_price']) && $_POST['sort_price'] == 'desc') echo 'checked'; ?>>
+                    <input class="form-check-input" type="radio" name="sort_price" id="priceDesc" value="desc" <?php if (isset($sort_price) && $sort_price == 'desc') echo 'checked'; ?>>
                     <label class="form-check-label" for="priceDesc">
                         Від найвищої до найнижчої
                     </label>
@@ -84,10 +88,26 @@ $this->Title = '';
                 <h5>Фільтрувати за об'ємом:</h5>
                 <select class="form-select" name="volume">
                     <option value="">Всі</option>
-                    <option value="0.5" <?php if (isset($_POST['volume']) && $_POST['volume'] == '0.5') echo 'selected'; ?>>0.5 л</option>
-                    <option value="1" <?php if (isset($_POST['volume']) && $_POST['volume'] == '1') echo 'selected'; ?>>1 л</option>
-                    <option value="1.5" <?php if (isset($_POST['volume']) && $_POST['volume'] == '1.5') echo 'selected'; ?>>1.5 л</option>
-                    <option value="2" <?php if (isset($_POST['volume']) && $_POST['volume'] == '2') echo 'selected'; ?>>2 л</option>
+                    <option value="0.2">0.2 л</option>
+                    <option value="0.25">0.25 л</option>
+                    <option value="0.33">0.33 л</option>
+                    <option value="0.35">0.35 л</option>
+                    <option value="0.355">0.355 л</option>
+                    <option value="0.46">0.46 л</option>
+                    <option value="0.5">0.5 л</option>
+                    <option value="0.7">0.7 л</option>
+                    <option value="0.75">0.75 л</option>
+                    <option value="0.95">0.95 л</option>
+                    <option value="1">1.0 л</option>
+                    <option value="1.25">1.25 л</option>
+                    <option value="1.5">1.5 л</option>
+                    <option value="1.75">1.75 л</option>
+                    <option value="2">2.0 л</option>
+                    <option value="3">3.0 л</option>
+                    <option value="20 пакетів">20 пакетів</option>
+                    <option value="24 пакети">24 пакети</option>
+                    <option value="200 г">200 г</option>
+                    <option value="250 г">250 г</option>
                 </select>
             </div>
         </div>
@@ -104,7 +124,10 @@ $this->Title = '';
                             <div class="col-md-4 mb-4">
                                 <div class="card">
                                     <div class="btn-container">
-                                        <a href="#" class="btn btn-primary">Купити</a>
+                                        <form method="post" action="/drinks/addToCart">
+                                            <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                                            <button type="submit" class="btn btn-primary">Купити</button>
+                                        </form>
                                     </div>
                                     <div class="card-img-container">
                                         <img src="<?php echo $value['image_url']; ?>" class="card-img-top" alt="<?php echo $value['name']; ?>">
