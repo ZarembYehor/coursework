@@ -4,11 +4,14 @@ namespace core;
 use models\News;
 class Model 
 {
+    protected $db;
     protected $fieldsArray;
     protected static $primaryKey = 'id';
     protected static $tableName = '';
     public function __construct()
     {
+        global $db;
+        $this->db = $db;
         $this->fieldsArray = [];
     }
 

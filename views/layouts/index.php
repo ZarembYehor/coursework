@@ -78,7 +78,6 @@ if (empty($Content)) {
                 </ul>
             </div>
         <?php endif; ?>
-        <!-- Cart Icon with Item Count -->
         <div class="dropdown text-end ms-3 position-relative">
             <a href="/drinks/cart" class="d-block link-dark text-decoration-none position-relative">
                 <i class="bi bi-cart-fill" style="font-size: 1.5rem;"></i>

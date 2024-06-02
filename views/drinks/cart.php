@@ -37,6 +37,7 @@ $this->Title = '';
         <form method="post" action="/drinks/clearCart">
             <button type="submit" class="btn btn-warning">Очистити кошик</button>
         </form>
+        <a href="/order/checkout" class="btn btn-success mt-3">Оформити замовлення</a>
     <?php else: ?>
         <p>Ваш кошик порожній.</p>
     <?php endif; ?>

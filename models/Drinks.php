@@ -75,5 +75,12 @@ class Drinks extends Model
         return $sth->fetchAll();
     }
     
-    
+    public function decreaseQuantity($drinkId, $quantity)
+    {
+        $query = "UPDATE drinks SET stock_quantity = stock_quantity - :quantity WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':quantity', $quantity);
+        $stmt->bindParam(':id', $drinkId);
+        $stmt->execute();
+    }
 }
