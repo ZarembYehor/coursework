@@ -4,13 +4,20 @@ namespace controllers;
 
 use core\Cart as CoreCart;
 use core\Controller;
+use core\Core;
 use models\Order;
 use models\Cart;
+use models\Users;
+use core\DB;
 
 class OrderController extends Controller
 {
     public function actionCheckout()
     {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
+
         $cart = CoreCart::getProducts();
         if (empty($cart)) {
             $this->redirect('/drinks/index');
@@ -39,6 +46,93 @@ class OrderController extends Controller
 
     public function actionSuccess()
     {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
+        return $this->render();
+    }
+
+    public function actionUpdate()
+    {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
+        if ($this->isPost) {
+            $id = (int)$_POST['id'];
+            $newData = [
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'address' => $_POST['address'],
+                'phone' => $_POST['phone'],
+                'created_at' => $_POST['created_at']
+            ];
+
+            $orderModel = new Order();
+            $orderModel->updateOrderById($id, $newData);
+
+            header('Location: /order/index');
+            exit();
+        } else {
+            header('Location: /orders');
+            exit();
+        }
+    }
+
+    public function actionGetOrders()
+    {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Access denied']);
+            return;
+        }
+
+        $orders = Order::getAllOrders();
+        echo json_encode($orders);
+    }
+
+    public function actionDelete()
+    {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
+        if ($this->isPost) {
+            if (!empty($_POST['id'])) {
+                $id = intval($_POST['id']);
+                $orderModel = new Order();
+                $orderModel->deleteOrderById($id);
+                return $this->render();
+            }
+        } else {
+            $this->redirect('/order/index');
+        }
+    }
+
+    public function actionIndex() {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
+        $this->addRows(Order::getAllOrders());
+        return $this->render();
+    }
+
+    public function actionShoworder() {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
+        $orderId = '';
+        if ($this->isPost) {
+            $orderId = $_POST['order_id'];
+            $orderId = intval($orderId);
+        }
+        $this->addRows(Order::FindByOrderId($orderId));
+        return $this->render();
+    }
+
+    public function actionFormtoupdate() {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/');
+        }
         return $this->render();
     }
 }
+ 

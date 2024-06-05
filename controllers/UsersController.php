@@ -4,8 +4,8 @@ namespace controllers;
 
 use core\Controller;
 use core\Core;
-use core\Template;
 use models\Users;
+use models\Order;
 
 class UsersController extends Controller {
 
@@ -26,7 +26,7 @@ class UsersController extends Controller {
     }
 
     public function actionLogout() {
-        Users::LogoutUser($_SESSION['user']);
+        Users::LogoutUser();
         return $this->redirect('/users/login');
     }
 
@@ -61,7 +61,54 @@ class UsersController extends Controller {
         }
         return $this->render();
     }
+
     public function actionRegistersuccess() {
         return $this->render();
+    }
+
+    public function actionIndex() {
+        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
+            return $this->redirect('/users/login');
+        }
+        $this->addRows(Order::getAllOrders());
+        return $this->render();
+    }
+
+    public function actionProfile()
+    {
+        if (!Users::IsUserLogged()) {
+            return $this->redirect('/users/login');
+        }
+
+        $user = Core::get()->session->get('user');
+        $email = $user['login'];
+        $orders = Order::findByEmail($email);
+        $this->addRows($orders);
+
+        return $this->render();
+    }
+
+    public function actionUpdateProfile()
+    {
+        if (!Users::IsUserLogged()) {
+            return $this->redirect('/users/login');
+        }
+
+        if ($this->isPost && Users::IsUserLogged()) {
+            $user = Core::get()->session->get('user');
+            $updatedData = [
+                'password' => $_POST['password'],
+                'firstName' => $_POST['firstName'],
+                'lastName' => $_POST['lastName']
+            ];
+
+            Users::updateUserById($user['id'], $updatedData);
+
+            $updatedUser = Users::findByLogin($user['login']);
+            Core::get()->session->set('user', $updatedUser);
+
+            header('Location: /users/profile');
+            exit();
+        }
     }
 }

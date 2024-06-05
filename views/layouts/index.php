@@ -18,6 +18,7 @@ if (empty($Content)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title><?= $Title ?></title>
+    <link rel="icon" type="image/png" href="https://www.pngmart.com/files/15/Empty-Glass-Bottle-PNG-File.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -53,7 +54,12 @@ if (empty($Content)) {
             <li class="nav-item"><a href="/" class="nav-link">Головна</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Customers</a></li>
             <li class="nav-item"><a href="/drinks/index" class="nav-link">Напої</a></li>
-            <?php if (!Users::IsUserLogged()): ?>
+            <?php if (Users::IsUserLogged()): ?>
+                <?php if (Users::IsUserAdmin()): ?>
+                    <li class="nav-item"><a href="/order/index" class="nav-link">Замовлення</a></li>
+                <?php endif; ?>
+                <li class="nav-item"><a href="/users/logout" class="nav-link">Вийти</a></li>
+            <?php else: ?>
                 <li class="nav-item"><a href="/users/login" class="nav-link">Увійти</a></li>
                 <li class="nav-item"><a href="/users/register" class="nav-link">Зареєструватись</a></li>
             <?php endif; ?>
@@ -65,12 +71,10 @@ if (empty($Content)) {
         <?php if (Users::IsUserLogged()): ?>
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    <img src="https://image-thumbs.shafastatic.net/313102076_310_430" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="/users/profile">Профіль</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

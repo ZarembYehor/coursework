@@ -42,7 +42,7 @@ class Router {
         //header("Location: /site/error/{$code}");
         switch($code) {
             case 404: 
-                echo "404 Not Found";
+                header("Location: /site/error");
                 break;
         }
     }

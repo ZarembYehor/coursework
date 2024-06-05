@@ -1,15 +1,68 @@
-<?php
-$this->Title = 'Головна сторінка';
-?>
-<div class="container">
-    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores perspiciatis porro cupiditate ut architecto, nostrum repudiandae? Necessitatibus laudantium neque hic nisi iste dignissimos illo odio incidunt aut. Accusantium, veritatis vel?</div>
-    <div>Recusandae amet suscipit voluptatem blanditiis laboriosam corrupti molestiae illum sit nisi temporibus culpa, fugiat, ullam placeat sint dolore rerum corporis ad facilis hic a laborum voluptas earum quaerat? Rem, ea!</div>
-    <div>Architecto cupiditate quo explicabo dolore facilis omnis et. Delectus ab officia voluptate quae quod doloremque ut nisi nemo expedita? Recusandae ad tenetur expedita quam vel temporibus voluptatibus accusantium, omnis sapiente!</div>
-    <div>Iure reprehenderit, pariatur nihil provident laudantium beatae vero saepe, consequatur animi asperiores error eum quod similique harum veniam impedit et, sit ex. Expedita, veniam delectus facere laboriosam aspernatur recusandae quisquam?</div>
-    <div>Placeat doloremque iste culpa, dolorem officiis harum quae dicta, porro accusamus eligendi quis laborum ipsam. Hic repellat tenetur perferendis, iste expedita rem. Placeat rerum ea animi autem blanditiis saepe natus!</div>
-    <div>Consequuntur doloremque, et saepe doloribus ratione delectus unde illum quaerat. Culpa ad porro quos nesciunt consectetur itaque saepe repellat, exercitationem, voluptatum ut temporibus quae dolorem at repudiandae ex recusandae quam.</div>
-    <div>Autem ab facilis, illum repudiandae exercitationem voluptatum, necessitatibus dolor fugit dolorem nulla fugiat nesciunt sunt veniam facere natus ipsa excepturi consequatur iste? Numquam voluptate molestias at quod hic aliquam nam?</div>
-    <div>Quam error dolore adipisci, fugiat cum molestias quis itaque non nemo eaque aspernatur culpa commodi voluptate. Enim culpa accusamus nesciunt dolorem sint neque iste ea maiores id vero? Laudantium, ratione.</div>
-    <div>Nulla ipsam iste vel, officia recusandae nemo autem eum cupiditate qui. Sequi nobis commodi, ipsam ullam pariatur ea ab, ex optio quae libero labore quod atque architecto voluptatem debitis omnis?</div>
-    <div>Quam iusto minima aperiam odio, sit mollitia cumque numquam accusantium perferendis quos animi quaerat ea odit unde ducimus praesentium deserunt consequuntur error! Perspiciatis illo laudantium sint, suscipit doloribus consequatur ipsam!</div>
+<div class="container mt-5">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Вітаємо на нашому сайті!</h1>
+        <p class="lead">Ми раді вітати вас на нашому сайті, де ви знайдете всю необхідну інформацію про наші послуги та продукти.</p>
+        <hr class="my-4">
+        <p>Дізнайтеся більше про наші послуги та продукти, перейшовши за посиланнями нижче.</p>
+        <a class="btn btn-primary btn-lg" href="/information/about" role="button">Дізнатись більше про нас</a>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Послуги</h5>
+                    <p class="card-text">Ми надаємо широкий спектр послуг, включаючи консалтинг, технічну підтримку, розробку програмного забезпечення та багато іншого. Наші фахівці готові допомогти вам з будь-якими питаннями та проблемами.</p>
+                    <a href="/information/services" class="btn btn-primary">Детальніше</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Продукти</h5>
+                    <p class="card-text">Наші продукти розроблені з урахуванням потреб наших клієнтів. Ми пропонуємо високоякісне програмне забезпечення, яке допоможе вам підвищити ефективність вашого бізнесу та досягти нових висот.</p>
+                    <a href="/drinks/index" class="btn btn-primary">Детальніше</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Контакти</h5>
+                    <p class="card-text">Зв'яжіться з нами для отримання додаткової інформації або для обговорення ваших проектів. Ми завжди раді новим співпрацівникам та готові надати вам необхідну допомогу.</p>
+                    <a href="/information/contacts" class="btn btn-primary">Детальніше</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Про нас</h5>
+                    <p class="card-text">Ми - команда професіоналів, яка вже багато років працює в сфері інформаційних технологій. Наші досвід і знання дозволяють нам надавати послуги найвищої якості та забезпечувати успішні результати для наших клієнтів.</p>
+                    <a href="/information/about" class="btn btn-primary">Детальніше</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .jumbotron {
+        background-color: #f8f9fa;
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+    }
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    .btn {
+        margin-top: 1rem;
+    }
+</style>

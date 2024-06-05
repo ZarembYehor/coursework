@@ -78,7 +78,7 @@ class Drinks extends Model
     public function decreaseQuantity($drinkId, $quantity)
     {
         $query = "UPDATE drinks SET stock_quantity = stock_quantity - :quantity WHERE id = :id";
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->pdo->prepare($query);
         $stmt->bindParam(':quantity', $quantity);
         $stmt->bindParam(':id', $drinkId);
         $stmt->execute();

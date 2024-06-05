@@ -2,10 +2,15 @@
 
 namespace models;
 
+use core\Core;
 use core\Model;
+use core\Db;
+use core\Config;
 
 class Order extends Model
 {
+    public static $tableName = 'orders';
+
     public function __construct() {
         parent::__construct();
     }
@@ -44,5 +49,39 @@ class Order extends Model
             $this->db->pdo->rollBack();
             return false;
         }
+    }
+
+    public static function getAllOrders() {
+        $rows = self::getAll(self::$tableName);
+        if(!empty($rows)) {
+            return $rows;
+        } else {
+            return null;
+        }
+    }
+
+    public static function FindByOrderId($id) {
+        $rows = self::findById($id);
+
+        if(!empty($rows)) {
+            return $rows;
+        } else {
+            return null;
+        }
+    }
+
+    public function deleteOrderById($id)
+    {
+        $this->db->delete('orders', ['id' => $id]);
+    }
+
+    public function updateOrderById($id, $newData)
+    {
+        $this->db->update('orders', $newData, ['id' => $id]);
+    }
+
+    public static function findByEmail($email)
+    {
+        return Core::get()->db->select(static::$tableName, '*', ['email' => $email]);
     }
 }

@@ -5,15 +5,6 @@ namespace models;
 use core\Model;
 use core\Core;
 
-
-/**
-* @property string $login Логін
-* @property string $password Пароль
-* @property string $firstName Ім'я
-* @property string $lastName Прізвище
-* @property int $id ID користувача
-*/
-
 class Users extends Model
 {
     public static $tableName = 'users';
@@ -22,7 +13,7 @@ class Users extends Model
         $rows = self::findByCondition(['login' => $login, 'password' => $password]);
 
         if(!empty($rows)) {
-            return $rows;
+            return $rows[0];
         } else {
             return null;
         }
@@ -32,7 +23,7 @@ class Users extends Model
         $rows = self::findByCondition(['login' => $login]);
 
         if(!empty($rows)) {
-            return $rows;
+            return $rows[0];
         } else {
             return null;
         }
@@ -42,12 +33,22 @@ class Users extends Model
         return !empty(Core::get()->session->get('user'));
     }
 
+    public static function IsUserAdmin() {
+        $user = Core::get()->session->get('user');
+        return isset($user['isAdmin']) && $user['isAdmin'] == 1;
+    }
+
     public static function LoginUser($user) {
         Core::get()->session->set('user', $user);
     }
 
-    public static function LogoutUser($user) {
-        Core::get()->session->remove('user', $user);
+    public static function LogoutUser() {
+        Core::get()->session->remove('user');
+    }
+
+    public static function updateUserById($id, $newData)
+    {
+        Core::get()->db->update(self::$tableName, $newData, ['id' => $id]);
     }
 
     public static function RegisterUser($login, $password, $lastName, $firstName) {
