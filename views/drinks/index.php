@@ -10,7 +10,7 @@ $this->Title = '';
     <style>
         .card-img-container {
             width: 100%;
-            height: 500px; 
+            height: 500px;
             overflow: hidden;
         }
 
@@ -40,6 +40,24 @@ $this->Title = '';
             flex-wrap: wrap;
             gap: 20px;
             align-items: flex-start;
+        }
+
+        .out-of-stock {
+            opacity: 0.5;
+            position: relative;
+        }
+
+        .out-of-stock::after {
+            content: "Немає в наявності";
+            color: red;
+            font-size: 1.2em;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
         }
     </style>
     <h1 class="mb-4">Пропозиції</h1>
@@ -116,40 +134,69 @@ $this->Title = '';
     </form>
 
     <div class="row mt-4">
-        <?php if (!empty($rows)): ?>
-            <?php foreach ($rows as $row): ?>
-                <?php if (!empty($row)): ?>
-                    <?php foreach ($row as $key => $value): ?>
-                        <?php if (is_array($value)): ?>
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <div class="btn-container">
-                                        <form method="post" action="/drinks/addToCart">
-                                            <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
-                                            <button type="submit" class="btn btn-primary">Купити</button>
-                                        </form>
-                                    </div>
-                                    <div class="card-img-container">
-                                        <img src="<?php echo $value['image_url']; ?>" class="card-img-top" alt="<?php echo $value['name']; ?>">
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?php echo $value['name']; ?></h5>
-                                        <p class="card-text">
-                                            <strong>Ціна:</strong> <?php echo $value['price']; ?> грн.<br>
-                                            <strong>Об'єм:</strong> <?php echo $value['volume']; ?><br>
-                                            <strong>Виробник:</strong> <?php echo $value['manufacturer']; ?><br>
-                                            <strong>Опис товару:</strong> <?php echo $value['description']; ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php else: ?>
-                            <?php echo $value; ?><br>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        <?php else: ?>
+        <?php
+        $inStock = [];
+        $outOfStock = [];
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                if (!empty($row)) {
+                    foreach ($row as $key => $value) {
+                        if (is_array($value)) {
+                            if ($value['stock_quantity'] > 0) {
+                                $inStock[] = $value;
+                            } else {
+                                $outOfStock[] = $value;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        foreach ($inStock as $value): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="btn-container">
+                        <form method="post" action="/drinks/addToCart">
+                            <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                            <button type="submit" class="btn btn-primary">Купити</button>
+                        </form>
+                    </div>
+                    <div class="card-img-container">
+                        <img src="<?php echo $value['image_url']; ?>" class="card-img-top" alt="<?php echo $value['name']; ?>">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $value['name']; ?></h5>
+                        <p class="card-text">
+                            <strong>Ціна:</strong> <?php echo $value['price']; ?> грн.<br>
+                            <strong>Об'єм:</strong> <?php echo $value['volume']; ?><br>
+                            <strong>Виробник:</strong> <?php echo $value['manufacturer']; ?><br>
+                            <strong>Опис товару:</strong> <?php echo $value['description']; ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($outOfStock as $value): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card out-of-stock">
+                    <div class="btn-container"></div>
+                    <div class="card-img-container">
+                        <img src="<?php echo $value['image_url']; ?>" class="card-img-top" alt="<?php echo $value['name']; ?>">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $value['name']; ?></h5>
+                        <p class="card-text">
+                            <strong>Ціна:</strong> <?php echo $value['price']; ?> грн.<br>
+                            <strong>Об'єм:</strong> <?php echo $value['volume']; ?><br>
+                            <strong>Виробник:</strong> <?php echo $value['manufacturer']; ?><br>
+                            <strong>Опис товару:</strong> <?php echo $value['description']; ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+
+        <?php if (empty($inStock) && empty($outOfStock)): ?>
             <p>Немає доступних напоїв.</p>
         <?php endif; ?>
     </div>

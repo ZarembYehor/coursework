@@ -31,15 +31,20 @@ class Order extends Model
             $orderId = $this->db->pdo->lastInsertId();
 
             foreach ($cart as $item) {
-                $orderItemData = [
-                    'order_id' => $orderId,
-                    'drink_id' => $item['id'],
-                    'quantity' => $item['stock_quantity'],
-                    'price' => $item['price']
-                ];
-                $this->db->insert('order_items', $orderItemData);
+                if ($item['stock_quantity'] > 0) {
+                    $orderItemData = [
+                        'order_id' => $orderId,
+                        'drink_id' => $item['id'],
+                        'quantity' => $item['stock_quantity'],
+                        'price' => $item['price']
+                    ];
+                    $this->db->insert('order_items', $orderItemData);
 
-                $this->db->update('drinks', ['stock_quantity' => $item['stock_quantity'] - $item['stock_quantity']], ['id' => $item['id']]);
+                    $newQuantity = $item['stock_quantity'] - 1;
+                    $this->db->update('drinks', ['stock_quantity' => $newQuantity], ['id' => $item['id']]);
+                } else {
+                    throw new \Exception('Insufficient stock for item ID: ' . $item['id']);
+                }
             }
 
             $this->db->pdo->commit();
@@ -50,6 +55,7 @@ class Order extends Model
             return false;
         }
     }
+
 
     public static function getAllOrders() {
         $rows = self::getAll(self::$tableName);
@@ -79,6 +85,8 @@ class Order extends Model
     {
         $this->db->update('orders', $newData, ['id' => $id]);
     }
+
+    
 
     public static function findByEmail($email)
     {

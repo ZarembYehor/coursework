@@ -14,10 +14,6 @@ class OrderController extends Controller
 {
     public function actionCheckout()
     {
-        if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
-            return $this->redirect('/');
-        }
-
         $cart = CoreCart::getProducts();
         if (empty($cart)) {
             $this->redirect('/drinks/index');
