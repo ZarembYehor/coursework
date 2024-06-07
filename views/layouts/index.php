@@ -112,7 +112,7 @@ if (empty($Content)) {
                 <li class="nav-item"><a href="/information/about" class="nav-link px-2 text-body-secondary">Про нас</a></li>
                 <li class="nav-item"><a href="/information/contacts" class="nav-link px-2 text-body-secondary">Контакти</a></li>
             </ul>
-            <p class="text-center text-body-secondary">© 2024 Назва компанії, Inc</p>
+            <p class="text-center text-body-secondary">© 2024 SibashShop, Inc</p>
         </footer>
     </div>
 </body>
