@@ -1,11 +1,3 @@
-<?php
-/** @var array $rows Записи товарів */
-/** @var int $category_id Вибрана категорія */
-/** @var string $sort_price Вибраний порядок сортування ціни */
-/** @var string $volume Вибраний об'єм */
-/** @var string $search_name Введене значення для пошуку */
-$this->Title = '';
-?>
 <div class="container mt-5">
     <style>
         .card-img-container {
@@ -25,14 +17,24 @@ $this->Title = '';
             overflow-y: auto;
         }
 
-        .btn-container {
+        .card {
             position: relative;
+            overflow: hidden;
         }
 
-        .btn-container .btn {
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-end;
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 0;
+            right: 0;
+            padding: 10px;
+        }
+
+        .btn-container form {
+            margin-bottom: 10px;
         }
 
         .filter-container {
@@ -47,6 +49,12 @@ $this->Title = '';
             position: relative;
         }
 
+        .btn-add-to-cart,
+        .btn-remove-from-cart,
+        .btn-update-cart {
+            width: 100px;
+        }
+
         .out-of-stock::after {
             content: "Немає в наявності";
             color: red;
@@ -59,17 +67,36 @@ $this->Title = '';
             background-color: rgba(255, 255, 255, 0.8);
             padding: 5px;
         }
+
+        .btn-add-to-cart {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-remove-from-cart {
+            background-color: red;
+            color: white;
+        }
+
+        .btn-update-cart {
+            background-color: blue;
+            color: white;
+        }
     </style>
     <h1 class="mb-4">Пропозиції</h1>
 
     <form method="post" action="/drinks/filter">
         <div class="filter-container">
             <div class="mb-4" style="flex-grow: 1;">
-                <input type="text" name="search_name" class="form-control" placeholder="Пошук за назвою" value="<?php echo htmlspecialchars($search_name ?? ''); ?>">
+                <input type="text" name="search_name" class="form-control" placeholder="Пошук за назвою" value="<?php
+
+                                                                                                                use models\Users;
+
+                                                                                                                echo htmlspecialchars($search_name ?? ''); ?>">
             </div>
             <div class="mb-4">
                 <h5>Фільтрувати за категорією:</h5>
-                <?php 
+                <?php
                 $categories = [
                     ['id' => 1, 'name' => 'Газовані напої'],
                     ['id' => 2, 'name' => 'Сік'],
@@ -78,7 +105,7 @@ $this->Title = '';
                     ['id' => 10, 'name' => 'Чай/кава']
                 ];
 
-                foreach ($categories as $category): ?>
+                foreach ($categories as $category) : ?>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="category_id" id="category<?php echo $category['id']; ?>" value="<?php echo $category['id']; ?>" <?php if (isset($category_id) && $category_id == $category['id']) echo 'checked'; ?>>
                         <label class="form-check-label" for="category<?php echo $category['id']; ?>">
@@ -152,13 +179,23 @@ $this->Title = '';
                 }
             }
         }
-        foreach ($inStock as $value): ?>
+        foreach ($inStock as $value) : ?>
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="btn-container">
+                        <?php if (Users::IsUserAdmin()) : ?>
+                            <form method="post" action="/drinks/updateCart">
+                                <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                                <button type="submit" class="btn btn-primary btn-update-cart">Оновити</button>
+                            </form>
+                            <form method="post" action="/drinks/delete">
+                                <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                                <button type="submit" class="btn btn-danger btn-remove-from-cart">Видалити</button>
+                            </form>
+                        <?php endif ?>
                         <form method="post" action="/drinks/addToCart">
                             <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
-                            <button type="submit" class="btn btn-primary">Купити</button>
+                            <button type="submit" class="btn btn-primary btn-add-to-cart">Купити</button>
                         </form>
                     </div>
                     <div class="card-img-container">
@@ -176,10 +213,21 @@ $this->Title = '';
                 </div>
             </div>
         <?php endforeach; ?>
-        <?php foreach ($outOfStock as $value): ?>
+        <?php foreach ($outOfStock as $value) : ?>
             <div class="col-md-4 mb-4">
                 <div class="card out-of-stock">
-                    <div class="btn-container"></div>
+                    <?php if (Users::IsUserAdmin()) : ?>
+                        <div class="btn-container">
+                            <form method="post" action="/drinks/delete">
+                                <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                                <button type="submit" class="btn btn-danger btn-remove-from-cart">Видалити</button>
+                            </form>
+                            <form method="post" action="/drinks/updateCart">
+                                <input type="hidden" name="product_id" value="<?php echo $value['id']; ?>">
+                                <button type="submit" class="btn btn-primary btn-update-cart">Оновити</button>
+                            </form>
+                        </div>
+                    <?php endif ?>
                     <div class="card-img-container">
                         <img src="<?php echo $value['image_url']; ?>" class="card-img-top" alt="<?php echo $value['name']; ?>">
                     </div>
@@ -196,8 +244,7 @@ $this->Title = '';
             </div>
         <?php endforeach; ?>
 
-        <?php if (empty($inStock) && empty($outOfStock)): ?>
+        <?php if (empty($inStock) && empty($outOfStock)) : ?>
             <p>Немає доступних напоїв.</p>
         <?php endif; ?>
     </div>
-</div>

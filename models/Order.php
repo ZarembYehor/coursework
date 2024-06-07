@@ -11,7 +11,8 @@ class Order extends Model
 {
     public static $tableName = 'orders';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -57,19 +58,21 @@ class Order extends Model
     }
 
 
-    public static function getAllOrders() {
+    public static function getAllOrders()
+    {
         $rows = self::getAll(self::$tableName);
-        if(!empty($rows)) {
+        if (!empty($rows)) {
             return $rows;
         } else {
             return null;
         }
     }
 
-    public static function FindByOrderId($id) {
+    public static function FindByOrderId($id)
+    {
         $rows = self::findById($id);
 
-        if(!empty($rows)) {
+        if (!empty($rows)) {
             return $rows;
         } else {
             return null;
@@ -86,7 +89,7 @@ class Order extends Model
         $this->db->update('orders', $newData, ['id' => $id]);
     }
 
-    
+
 
     public static function findByEmail($email)
     {

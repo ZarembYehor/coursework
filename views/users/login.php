@@ -1,14 +1,15 @@
 <?php
+
 /** @var string $error_message Повідомлення про помилку*/
 $this->Title = 'Вхід на сайт';
 ?>
 <div class="container my-5">
     <form method="post" action="">
-        <?php if(!empty($error_message)) :?>
+        <?php if (!empty($error_message)) : ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $error_message ?>
             </div>
-        <?php endif?>
+        <?php endif ?>
         <div class="mb-3">
             <label for="inputEmail" class="form-label">Логін/email</label>
             <input name="login" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">

@@ -1,5 +1,7 @@
 <?php
+
 /** @var array $rows */
+
 use models\Users;
 use models\Order;
 
@@ -21,10 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['fetch_orders'])) {
 
 $rows = Order::getAllOrders();
 
-function renderOrderTable($rows) {
+function renderOrderTable($rows)
+{
     $values = array_values($rows);
     ob_start();
-    ?>
+?>
     <div class="container mt-4">
         <h2>Список замовлень</h2>
         <table class="table table-bordered" id="orders-table">
@@ -39,7 +42,7 @@ function renderOrderTable($rows) {
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 0; $i < count($values); $i++): ?>
+                <?php for ($i = 0; $i < count($values); $i++) : ?>
                     <tr>
                         <td><?= htmlspecialchars($values[$i]['id']) ?></td>
                         <td><?= htmlspecialchars($values[$i]['name']) ?></td>
@@ -59,7 +62,7 @@ function renderOrderTable($rows) {
             </form>
         </div>
     </div>
-    <?php
+<?php
     return ob_get_clean();
 }
 ?>
@@ -68,33 +71,34 @@ function renderOrderTable($rows) {
 </div>
 <script>
     function fetchOrders() {
-        fetch('', { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ fetch_orders: 1 })
-    })
-    .then(response => response.text())
-    .then(data => {
-        if (data === 'Access denied') {
-            console.error('Error fetching orders: Access denied');
-            return;
-        }
-        document.getElementById('orders-container').innerHTML = data;
-    })
-    .catch(error => {
-        console.error('Error fetching orders:', error);
+        fetch('', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fetch_orders: 1
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'Access denied') {
+                    console.error('Error fetching orders: Access denied');
+                    return;
+                }
+                document.getElementById('orders-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error fetching orders:', error);
+            });
+    }
+
+    function updateOrders() {
+        setInterval(fetchOrders, 10000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchOrders();
+        updateOrders();
     });
-}
-
-function updateOrders() {
-    setInterval(fetchOrders, 10000);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetchOrders();
-    updateOrders();
-});
-
 </script>

@@ -8,16 +8,20 @@ use core\Template;
 use models\News;
 use models\Users;
 
-class InformationController extends Controller {
-    public function actionAbout() {
+class InformationController extends Controller
+{
+    public function actionAbout()
+    {
         return $this->render();
     }
 
-    public function actionServices() {
+    public function actionServices()
+    {
         return $this->render();
     }
 
-    public function actionContacts() {
+    public function actionContacts()
+    {
         return $this->render();
     }
 }

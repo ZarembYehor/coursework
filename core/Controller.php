@@ -2,7 +2,8 @@
 
 namespace core;
 
-class Controller {
+class Controller
+{
     protected $template;
     protected $errorMessage;
     protected $rows;
@@ -16,8 +17,8 @@ class Controller {
         $module = Core::get()->moduleName;
         $path = "views/{$module}/{$action}.php";
         $this->template = new Template($path);
-        switch($_SERVER["REQUEST_METHOD"]) {
-            case 'POST': 
+        switch ($_SERVER["REQUEST_METHOD"]) {
+            case 'POST':
                 $this->isPost = true;
                 break;
             case 'GET':
@@ -29,28 +30,28 @@ class Controller {
         $this->errorMessage = [];
     }
 
-    public function render($pathToView = null) : array
+    public function render($pathToView = null): array
     {
-        if(!empty($pathToView))
+        if (!empty($pathToView))
             $this->template->SetTemplateFilePath($pathToView);
         return [
             'Content' => $this->template->getHTML()
         ];
     }
 
-    public function redirect($path) : void
+    public function redirect($path): void
     {
         header("Location: {$path}");
         die;
     }
 
-    public function addErrorMessage($message = null) : void
+    public function addErrorMessage($message = null): void
     {
         $this->errorMessage[] = $message;
         $this->template->setParam('error_message', implode('<br/>', $this->errorMessage));
     }
 
-    public function clearErrorMessage() : void
+    public function clearErrorMessage(): void
     {
         $this->errorMessage = [];
         $this->template->setParam('error_message', null);
@@ -61,13 +62,13 @@ class Controller {
         return count($this->errorMessage) > 0;
     }
 
-    public function addRows($message = null) : void
+    public function addRows($message = null): void
     {
         $this->rows[] = $message;
         $this->template->setParam('rows', $this->rows);
     }
 
-    public function clearRows() : void
+    public function clearRows(): void
     {
         $this->rows = [];
         $this->template->setParam('rows', null);

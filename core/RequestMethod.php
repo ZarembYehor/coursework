@@ -2,17 +2,18 @@
 
 namespace core;
 
-class RequestMethod {
+class RequestMethod
+{
     public $array;
 
     public function __construct($array)
     {
-    $this->array = $array;
+        $this->array = $array;
     }
 
     public function get($name)
     {
-        if(isset($this->array[$name]))
+        if (isset($this->array[$name]))
             return $this->array[$name];
         else
             return null;

@@ -1,8 +1,10 @@
 <?php
 
 namespace core;
+
 use models\News;
-class Model 
+
+class Model
 {
     protected $db;
     protected $fieldsArray;
@@ -25,38 +27,44 @@ class Model
         return $this->fieldsArray[$name];
     }
 
-    public static function getAll() {
+    public static function getAll()
+    {
         return Core::get()->db->select(static::$tableName);
     }
 
-    public static function deleteById($id) {
+    public static function deleteById($id)
+    {
         Core::get()->db->delete(static::$tableName, [static::$primaryKey => $id]);
     }
 
-    public static function deleteByCondition($conditionAssocArray) {
+    public static function deleteByCondition($conditionAssocArray)
+    {
         Core::get()->db->delete(static::$tableName, $conditionAssocArray);
     }
 
-    public static function findById($id) {
+    public static function findById($id)
+    {
         $arr = Core::get()->db->select(static::$tableName, '*', [static::$primaryKey => $id]);
-        if(count($arr) > 0) {
+        if (count($arr) > 0) {
             return $arr[0];
         } else {
             return null;
         }
     }
 
-    public static function findByCondition($conditionAssocArray) {
+    public static function findByCondition($conditionAssocArray)
+    {
         return Core::get()->db->select(static::$tableName, '*', $conditionAssocArray);
     }
 
-    public function save() {
+    public function save()
+    {
         $isInsert = false;
-        if(!isset($this->{static::$primaryKey})) {
+        if (!isset($this->{static::$primaryKey})) {
             $isInsert = true;
         } else {
             $value = $this->{static::$primaryKey};
-            if(empty($value)) {
+            if (empty($value)) {
                 $isInsert = true;
             }
         }
@@ -64,14 +72,16 @@ class Model
         //insert
         {
             Core::get()->db->insert(static::$tableName, $this->fieldsArray);
-        }
-        else
+        } else
         //update
         {
-            Core::get()->db->update(static::$tableName, $this->fieldsArray,
-        [
-            static::$primaryKey => $this->{static::$primaryKey}
-        ]);
+            Core::get()->db->update(
+                static::$tableName,
+                $this->fieldsArray,
+                [
+                    static::$primaryKey => $this->{static::$primaryKey}
+                ]
+            );
         }
     }
 }

@@ -5,12 +5,15 @@ namespace controllers;
 use core\Controller;
 use core\Template;
 
-class SiteController extends Controller {
-    public function actionIndex() {
+class SiteController extends Controller
+{
+    public function actionIndex()
+    {
         return $this->render();
     }
 
-    public function actionError() {
+    public function actionError()
+    {
         return $this->render();
     }
 }

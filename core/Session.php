@@ -2,7 +2,8 @@
 
 namespace core;
 
-class Session {
+class Session
+{
     public function set($name, $value)
     {
         $_SESSION[$name] = $value;

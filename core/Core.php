@@ -4,7 +4,8 @@ namespace core;
 
 use core\Router;
 
-class Core {
+class Core
+{
     public $defaultLayoutPath = 'views/layouts/index.php';
     public $moduleName;
     public $actionName;
@@ -25,18 +26,21 @@ class Core {
         $this->session = new Session();
         session_start();
     }
-    public function run($route) {
+    public function run($route)
+    {
         $this->router = new Router($route);
         $params = $this->router->run();
-        if(!empty($params))
+        if (!empty($params))
             $this->template->setParams($params);
     }
-    public function done() {
+    public function done()
+    {
         $this->template->display();
         $this->router->done();
     }
-    public static function get() {
-        if(empty(self::$instance))
+    public static function get()
+    {
+        if (empty(self::$instance))
             self::$instance = new self();
         return self::$instance;
     }

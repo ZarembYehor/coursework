@@ -1,11 +1,12 @@
 <?php
+
 /** @var array $cart Товари у кошику */
 /** @var float $total Загальна вартість */
 $this->Title = '';
 ?>
 <div class="container mt-5">
     <h1 class="mb-4">Кошик</h1>
-    <?php if (!empty($cart)): ?>
+    <?php if (!empty($cart)) : ?>
         <table class="table">
             <thead>
                 <tr>
@@ -17,7 +18,7 @@ $this->Title = '';
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($cart as $index => $product): ?>
+                <?php foreach ($cart as $index => $product) : ?>
                     <tr>
                         <td><?php echo $product['name']; ?></td>
                         <td><?php echo $product['price']; ?> грн.</td>
@@ -38,7 +39,7 @@ $this->Title = '';
             <button type="submit" class="btn btn-warning">Очистити кошик</button>
         </form>
         <a href="/order/checkout" class="btn btn-success mt-3">Оформити замовлення</a>
-    <?php else: ?>
+    <?php else : ?>
         <p>Ваш кошик порожній.</p>
     <?php endif; ?>
 </div>

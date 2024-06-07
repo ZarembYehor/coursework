@@ -4,10 +4,10 @@
 
 use core\Core;
 
-$this->Title = 'Реєстрація нового користувача';
+$this->Title = 'Додавання нового напою';
 ?>
 <div class="container mt-5">
     <div class="alert alert-success" role="alert">
-        Ви успішно зареєструвались!
+        Товар успішно додано!
     </div>
 </div>

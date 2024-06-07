@@ -56,12 +56,15 @@
         padding: 2rem 1rem;
         margin-bottom: 2rem;
     }
+
     .card {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
     .card-body {
         padding: 1.5rem;
     }
+
     .btn {
         margin-top: 1rem;
     }

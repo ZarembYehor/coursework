@@ -56,11 +56,11 @@ class OrderController extends Controller
         if ($this->isPost) {
             $id = (int)$_POST['id'];
             $newData = [
-                'name' => $_POST['name'],
-                'email' => $_POST['email'],
-                'address' => $_POST['address'],
-                'phone' => $_POST['phone'],
-                'created_at' => $_POST['created_at']
+                'name' => $this->post->get('name'),
+                'email' => $this->post->get('email'),
+                'address' => $this->post->get('address'),
+                'phone' => $this->post->get('phone'),
+                'created_at' => $this->post->get('created_at')
             ];
 
             $orderModel = new Order();
@@ -92,8 +92,8 @@ class OrderController extends Controller
             return $this->redirect('/');
         }
         if ($this->isPost) {
-            if (!empty($_POST['id'])) {
-                $id = intval($_POST['id']);
+            if (!empty($this->post->get('id'))) {
+                $id = intval($this->post->get('id'));
                 $orderModel = new Order();
                 $orderModel->deleteOrderById($id);
                 return $this->render();
@@ -103,7 +103,8 @@ class OrderController extends Controller
         }
     }
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
             return $this->redirect('/');
         }
@@ -111,24 +112,29 @@ class OrderController extends Controller
         return $this->render();
     }
 
-    public function actionShoworder() {
+    public function actionShoworder()
+    {
         if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
             return $this->redirect('/');
         }
         $orderId = '';
         if ($this->isPost) {
-            $orderId = $_POST['order_id'];
+            $orderId = $this->post->get('order_id');
             $orderId = intval($orderId);
         }
         $this->addRows(Order::FindByOrderId($orderId));
         return $this->render();
     }
 
-    public function actionFormtoupdate() {
+    public function actionFormtoupdate()
+    {
         if (!Users::IsUserLogged() || !Users::IsUserAdmin()) {
             return $this->redirect('/');
         }
-        return $this->render();
+        if ($this->isPost) {
+            return $this->render();
+        } else {
+            $this->redirect('order/index');
+        }
     }
 }
- 

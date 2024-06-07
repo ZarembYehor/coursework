@@ -1,4 +1,5 @@
 <?php
+
 /** @var string $Title */
 /** @var string $Content */
 

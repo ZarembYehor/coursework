@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 0; $i < count($rows[0]); $i++): ?>
+                <?php for ($i = 0; $i < count($rows[0]); $i++) : ?>
                     <tr>
                         <td><?= $rows[0][$i]['id'] ?></td>
                         <td><?= $rows[0][$i]['name'] ?></td>
